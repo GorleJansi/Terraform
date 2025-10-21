@@ -9,11 +9,12 @@ terraform
    }
 
   backend "s3" {
-    bucket = "remote-state-86s"
-    key    = "provisioners-demo"
-    region = "us-east-1"
-    use_lockfile = true
-    encrypt = true
+    bucket        = "roboshop1-remotestate"   # Name of the S3 bucket where state file will be stored
+    key           = "provider-block-demo"      # Path inside the S3 bucket for this specific Terraform state
+    region        = "us-east-1"               # AWS region where the S3 bucket exists
+    use_lockfile  = true                      # Enables state locking to prevent concurrent modifications (Prevents two people from modifying state simultaneously.)
+    encrypt       = true                      # Enable server-side encryption for the state file in S3
+
    }
 }
 
