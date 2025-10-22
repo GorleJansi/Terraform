@@ -7,8 +7,8 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "remote-state-86s"
-    key    = "workspace-demo"
+    bucket = "roboshop1-remotestate-workspace"
+    key    = "workspace-demo-1"
     region = "us-east-1"
     use_lockfile = true
     encrypt = true
