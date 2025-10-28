@@ -1,6 +1,6 @@
 module "vpc" {
     #source = "../terraform-aws-vpc"
-    source = "git::https://github.com/daws-86s/terraform-aws-vpc.git?ref=main"
+    source = "git::https://github.com/GorleJansi/Terraform.git//terraform-vpc-module?ref=main"  # git:: → tells Terraform to pull the module from a Git repository.
     # vpc_cidr = "10.0.0.0/16"
     # project_name = "roboshop"
     # environment = "dev"
