@@ -52,6 +52,17 @@ Each route table is tagged and associated with the corresponding subnets.
 - Allocates a **static public IP** for the NAT Gateway.
 - Ensures consistent outbound IP address for private/database resources.
 
+## WHY EIP **
+Private Instance (no public IP)
+        ↓
+Private Route Table
+ (0.0.0.0/0 → NAT Gateway)
+        ↓
+NAT Gateway (has EIP)
+        ↓
+Internet Gateway (IGW)
+        ↓
+Internet
 ---
 
 ### **NAT Gateway**
