@@ -3,6 +3,7 @@
 ##############################################
 
 # Creates a Virtual Private Cloud (VPC) — this is the main networking boundary in AWS.
+
 resource "aws_vpc" "main" {
   
   cidr_block       = var.vpc_cidr      # CIDR range for the entire VPC (e.g., 10.0.0.0/16), provided through variables.
@@ -23,6 +24,7 @@ resource "aws_vpc" "main" {
 ##############################################
 
 # An Internet Gateway allows communication between the VPC and the internet.
+
 resource "aws_internet_gateway" "main" {
   # Attach IGW to the VPC we just created.
   vpc_id = aws_vpc.main.id
@@ -43,6 +45,7 @@ resource "aws_internet_gateway" "main" {
 ##############################################
 
 # Creates multiple public subnets across Availability Zones.
+
 resource "aws_subnet" "public" {
   # One subnet per CIDR block defined in var.public_subnet_cidrs.
   count = length(var.public_subnet_cidrs)
@@ -76,6 +79,7 @@ resource "aws_subnet" "public" {
 ##############################################
 
 # Creates private subnets — used for internal servers, not exposed to the internet.
+
 resource "aws_subnet" "private" {
   # One subnet per CIDR in private subnet list.
   count = length(var.private_subnet_cidrs)

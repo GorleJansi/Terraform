@@ -13,5 +13,6 @@ locals {
   # Fetches the list of available AWS Availability Zones from data source 'aws_availability_zones'.
   # Then selects the first two zones using 'slice(list,start,end)' function.
   # Example: If AZs = [us-east-1a, us-east-1b, us-east-1c] this will pick ["us-east-1a", "us-east-1b"]
+  
   az_names = slice(data.aws_availability_zones.available.names, 0, 2)
 }
