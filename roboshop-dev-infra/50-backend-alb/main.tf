@@ -49,10 +49,10 @@ resource "aws_route53_record" "backend_alb" {
   zone_id = var.zone_id                                          # The Route53 hosted zone ID (already existing in your AWS account)
   name    = "*.backend-alb-${var.environment}.${var.domain_name}" # Creates a wildcard subdomain (e.g., *.backend-alb-dev.example.com)
   type    = "A"                                                  # 'A' record maps domain to IPv4 address (ALB uses alias instead of static IP)
-
+#Since an ALB doesn’t have a static IP, we use the alias block.
   alias {
     # These values are automatically provided by AWS when ALB is created
-    name                   = aws_lb.backend_alb.dns_name         # ALB's DNS name (AWS-managed)
+    name                   = aws_lb.backend_alb.dns_name         # ALB's DNS name (system DNS name of your ALB-created default in aws)
     zone_id                = aws_lb.backend_alb.zone_id          # ALB's hosted zone ID (for aliasing in Route53)
     evaluate_target_health = true                                # Route53 checks ALB health before routing traffic
   }
