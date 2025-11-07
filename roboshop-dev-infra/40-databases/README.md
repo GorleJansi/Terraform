@@ -4,8 +4,6 @@ This folder contains Terraform code to provision and configure database-related 
 
 ---
 
----
-
 ## Prerequisites
 
 - AWS account with proper permissions for EC2, SSM, IAM, and Route53.
@@ -54,6 +52,8 @@ This folder contains Terraform code to provision and configure database-related 
     redis-<env>.<domain>
     mysql-<env>.<domain>
     rabbitmq-<env>.<domain>
+
+---
 
 ##  Usage. 
   ```bash
