@@ -18,6 +18,8 @@ resource "aws_instance" "mongodb" {
 }
 
 # Terraform "provisioner" resource to configure MongoDB instance after creation
+# Terraform directly connects to the EC2 instance (via SSH), copies bootstrap.sh to it, and runs it.
+
 resource "terraform_data" "mongodb" {
   triggers_replace = [
     aws_instance.mongodb.id                               # Re-run provisioners if MongoDB instance is replaced
