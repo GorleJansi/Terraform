@@ -106,15 +106,15 @@ Before applying this Terraform code:
 1. Initialize Terraform:
  ```bash
  terraform init
-
+ ```
 2. Review the plan:
  ```bash
   terraform plan 
-
+ ```
 3. Apply the configuration:
  ```bash
  terraform apply -auto-approve
-
+ ```
 ---
 
 ## 🧹 Cleanup
@@ -122,7 +122,7 @@ Before applying this Terraform code:
 To destroy the infrastructure:
  ```bash
 terraform destroy -auto-approve
-
+ ```
 ---
 
 ## 🏁 Outcome
