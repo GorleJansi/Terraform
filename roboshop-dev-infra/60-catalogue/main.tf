@@ -15,6 +15,7 @@ resource "aws_instance" "catalogue" {
         }
     )
 }
+
 # =========================================================
 # Connect and configure EC2 instance via Terraform
 # =========================================================
@@ -119,10 +120,10 @@ resource "aws_launch_template" "catalogue" {
   # Tags applied directly to the launch template itself.
 
 }
+
 # =========================================================
 # Auto Scaling Group for Catalogue
 # =========================================================
-
 resource "aws_autoscaling_group" "catalogue" {
   name = "${local.common_name_suffix}-catalogue"
   max_size = 10                           # Maximum number of EC2 instances the ASG can scale up to
@@ -153,7 +154,6 @@ resource "aws_autoscaling_group" "catalogue" {
     delete = "15m"
   }
 }
-
 
 # =========================================================
 # Auto Scaling Policy
