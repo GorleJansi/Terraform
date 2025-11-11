@@ -20,3 +20,9 @@ resource "aws_instance" "bastion" {                # Defines an EC2 instance nam
         }
     )
 }
+
+
+resource "aws_iam_instance_profile" "bastion" {
+  name = "bastion"
+  role = "BastionTerraformAdmin"
+}
