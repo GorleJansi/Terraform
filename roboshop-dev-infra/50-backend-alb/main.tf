@@ -21,7 +21,6 @@ resource "aws_lb" "backend_alb" {
  # When you specify multiple subnets:ALB creates nodes in each subnet (one per Availability Zone).
  # AWS automatically handles DNS-based load distribution across those AZs
 
-
 # ------------------------------------------------------------
 # Create a Listener for the Backend ALB
 # ------------------------------------------------------------
@@ -49,7 +48,7 @@ resource "aws_route53_record" "backend_alb" {
   zone_id = var.zone_id                                          # The Route53 hosted zone ID (already existing in your AWS account)
   name    = "*.backend-alb-${var.environment}.${var.domain_name}" # Creates a wildcard subdomain (e.g., *.backend-alb-dev.example.com)
   type    = "A"                                                  # 'A' record maps domain to IPv4 address (ALB uses alias instead of static IP)
-#Since an ALB doesn’t have a static IP, we use the alias block.
+   #Since an ALB doesn’t have a static IP, we use the alias block.
   alias {
     # These values are automatically provided by AWS when ALB is created
     name                   = aws_lb.backend_alb.dns_name         # ALB's DNS name (system DNS name of your ALB-created default in aws)
