@@ -105,22 +105,41 @@ resource "aws_launch_template" "catalogue" {
   instance_initiated_shutdown_behavior = "terminate" # 'terminate' means the EC2 instance will be deleted when shut down.
   instance_type = "t3.micro"  
   vpc_security_group_ids = [local.catalogue_sg_id]   # Assign security groups to the instance.
-  tag_specifications {                               # Tag specifications allow tagging at resource creation
-    resource_type = "instance"  
-    tags = merge(local.common_tags, { Name = "${local.common_name_suffix}-catalogue" })  
-  }
-
+  update_default_version = true                      # when we run terraform apply again, a new version will be created with new AMI ID instead of creating whole new template 
+  
+ # tags attached to the instance
   tag_specifications {
-    resource_type = "volume"  
-    # Specifies tags to apply to EBS volumes created with this instance.
-    tags = merge(local.common_tags, { Name = "${local.common_name_suffix}-catalogue" })  
+    resource_type = "instance"
+
+    tags = merge(
+      local.common_tags,
+      {
+        Name = "${local.common_name_suffix}-catalogue"
+      }
+    )
   }
 
-  tags = merge(local.common_tags, { Name = "${local.common_name_suffix}-catalogue" })  
-  # Tags applied directly to the launch template itself.
+  # tags attached to the volume created by instance
+  tag_specifications {
+    resource_type = "volume"
+
+    tags = merge(
+      local.common_tags,
+      {
+        Name = "${local.common_name_suffix}-catalogue"
+      }
+    )
+  }
+
+  # tags attached to the launch template
+  tags = merge(
+      local.common_tags,
+      {
+        Name = "${local.common_name_suffix}-catalogue"
+      }
+  )
 
 }
-
 # =========================================================
 # Auto Scaling Group for Catalogue
 # =========================================================
@@ -140,6 +159,14 @@ resource "aws_autoscaling_group" "catalogue" {
   vpc_zone_identifier = local.private_subnet_ids             # Subnets in which the ASG will launch EC2 instances (private subnets in this case)
   target_group_arns = [aws_lb_target_group.catalogue.arn]    # Attach the ASG to a Load Balancer Target Group(Load Balancer can send traffic toevery EC2 instance launched by the ASG automatically as it becomes part of that Target Group.)
   
+  instance_refresh {
+    strategy = "Rolling"             # "Rolling" means instances are updated in batches — not all at once.
+    preferences {
+      min_healthy_percentage = 50    # atleast 50% of the instances should be up and running , other can be replaced
+    }
+    triggers = ["launch_template"]   # The refresh process is automatically triggered when the launch template changes (for example, a new AMI version).
+  }
+
   dynamic "tag" {   # A dynamic block lets you loop over a map or list and create multiple tag blocks automatically.For each key-value pair, Terraform creates a separate tag {} block.
     for_each = merge(local.common_tags, { Name = "${local.common_name_suffix}-catalogue" })   # Iterates over all tags from local.common_tags plus a custom Name tag
     content {
@@ -188,8 +215,7 @@ resource "aws_lb_listener_rule" "catalogue" {
   condition {                                     # Condition block defines the criteria that must be met for the action to trigger
     host_header {                                 # Host header condition: this rule triggers if the request's host header matches one of the specified values
       values = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]     # Values is a list of hostnames. The rule will match if the request's "Host" header matches this value.
-      # This dynamically constructs the hostname based on environment and domain name variables
-      # Example: "catalogue.backend-alb.dev.example.com"
+      # This dynamically constructs the hostname based on environment and domain name variables ; Example: "catalogue.backend-alb.dev.example.com"
     }
   }
 }

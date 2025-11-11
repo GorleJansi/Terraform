@@ -73,3 +73,19 @@ resource "aws_route53_record" "frontend_alb" {
     evaluate_target_health = true                           # Use target health checks for Route53 failover logic
   }
 }
+
+
+
+
+
+
+# ---------------------------------------------------------
+# 1️⃣	aws_lb.frontend_alb	Creates a public-facing Application Load Balancer in public subnets
+# 2️⃣	aws_lb_listener.frontend_alb	Configures HTTPS listener on port 443 with ACM SSL certificate
+# 3️⃣	aws_route53_record.frontend_alb	Creates a DNS record (A alias) in Route53 that maps domain to ALB
+
+# After running terraform apply:
+# You get a public HTTPS ALB.
+# Accessing https://roboshop-dev.jansi1.site shows:
+# Hi, I am from HTTPS frontend ALB
+# The ALB is now ready to attach listener rules or Target Groups for your frontend app (like React or Nginx service).
