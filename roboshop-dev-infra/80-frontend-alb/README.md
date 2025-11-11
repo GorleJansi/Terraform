@@ -28,7 +28,7 @@ Configures an **HTTPS listener** on port **443** with an **ACM SSL certificate**
   <h1>Hi, I am from HTTPS frontend ALB</h1>
 
 
-###  3️⃣ aws_route53_record.frontend_alb
+###  3️⃣ `aws_route53_record.frontend_alb`
 
 Creates a **DNS A record (alias)** in Route53 that maps the custom domain to the ALB.
 
@@ -37,36 +37,36 @@ Creates a **DNS A record (alias)** in Route53 that maps the custom domain to the
 - **alias** : Points to the ALB’s DNS name and zone ID
 - **evaluate_target_health**: true for ALB health checks
 
-### ⚙️ After Running **terraform apply**
+### ⚙️ `After Running **terraform apply**`
 
 Once applied successfully:
 ✅ A public HTTPS ALB is created.
 
-### 🌐 Access your site at:
+### 🌐 `Access your site at:`
  ```bash
 https://roboshop-dev.jansi1.site
   ```
 
-### 🧾 You should see the message:
+### 🧾 `You should see the message:`
  ```bash
 Hi, I am from HTTPS frontend ALB
   ```
 
-### 🔧 The ALB is ready to attach:
+### 🔧 `The ALB is ready to attach:`
 
 - **Listener Rules**
 - **Target Groups (for React frontend / Nginx services)**
 
 
 
-### 🪄 Example Use
+### 🪄`Example Use`
  ```bash
 terraform init
 terraform plan
 terraform apply -auto-approve
   ```
 
-### Then open your browser and visit:
+### `Then open your browser and visit:`
  ```bash
 👉 https://roboshop-dev.jansi1.site 
  ```
