@@ -31,6 +31,7 @@ module "components" {
 # ----------------------------------------------------------------------
 
 module "components" {
+
     # for_each iterates over the `var.components` map variable
     # Example of `var.components`:
     # {
@@ -38,23 +39,9 @@ module "components" {
     #   user      = { rule_priority = 20 }
     #   cart      = { rule_priority = 30 }
     # }
+
     for_each = var.components
-
-    # ------------------------------------------------------------
-    # Source of the module — hosted on GitHub
-    # "ref=main" means the main branch of the repo will be used
-    # ------------------------------------------------------------
     source = "git::https://github.com/daws-86s/terraform-roboshop-component.git?ref=main"
-
-    # ------------------------------------------------------------
-    # Component name (like catalogue, user, cart, etc.)
-    # each.key gives the name of the current map key (component)
-    # ------------------------------------------------------------
     component = each.key
-
-    # ------------------------------------------------------------
-    # Rule priority for the ALB Listener Rule of that component
-    # each.value.rule_priority accesses the priority defined in the map
-    # ------------------------------------------------------------
     rule_priority = each.value.rule_priority
 }
