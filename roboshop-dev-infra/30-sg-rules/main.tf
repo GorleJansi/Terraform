@@ -101,11 +101,16 @@ resource "aws_security_group_rule" "redis_user" {
   to_port           = 6379
 }
 
+
+Allow incoming TCP traffic on port 6379
+From: the Cart application’s Security Group
+To: the Redis instance’s Security Group.
+
 resource "aws_security_group_rule" "redis_cart" {
   type              = "ingress"
-  security_group_id = local.redis_sg_id
-  source_security_group_id = local.cart_sg_id
-  from_port         = 6379
+  security_group_id = local.redis_sg_id                   The one receiving traffic
+  source_security_group_id = local.cart_sg_id             who can send the traffic — only instances that belong to the Cart app’s Security Group.
+  from_port         = 6379                                Redis listens on port 6379
   protocol          = "tcp"
   to_port           = 6379
 }
@@ -218,7 +223,7 @@ resource "aws_security_group_rule" "frontend_frontend_alb" {
   to_port           = 80
 }
 
-resource "aws_security_group_rule" "user_bastion" {
+resource "aws_security_group_rule" "user_bastion" {     # user should accept connection from bastion
   type              = "ingress"
   security_group_id = local.user_sg_id
   source_security_group_id = local.bastion_sg_id
@@ -227,7 +232,7 @@ resource "aws_security_group_rule" "user_bastion" {
   to_port           = 22
 }
 
-resource "aws_security_group_rule" "cart_bastion" {
+resource "aws_security_group_rule" "cart_bastion" {    # cart should accept conection from bastion
   type              = "ingress"
   security_group_id = local.cart_sg_id
   source_security_group_id = local.bastion_sg_id
@@ -245,7 +250,7 @@ resource "aws_security_group_rule" "shipping_bastion" {
   to_port           = 22
 }
 
-resource "aws_security_group_rule" "payment_bastion" {
+resource "aws_security_group_rule" "payment_bastion" {           
   type              = "ingress"
   security_group_id = local.payment_sg_id
   source_security_group_id = local.bastion_sg_id
@@ -254,7 +259,7 @@ resource "aws_security_group_rule" "payment_bastion" {
   to_port           = 22
 }
 
-resource "aws_security_group_rule" "frontend_bastion" {
+resource "aws_security_group_rule" "frontend_bastion" {     # frontend should accept connection from bastion
   type              = "ingress"
   security_group_id = local.frontend_sg_id
   source_security_group_id = local.bastion_sg_id
